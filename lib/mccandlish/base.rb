@@ -1,6 +1,7 @@
 require 'httparty'
 require 'oj'
-require 'uri'
+require 'cgi'
+require 'net/http'
 
 module Mccandlish
   
@@ -20,21 +21,25 @@ module Mccandlish
     ##
 		# Builds a request URI to call the API server
 		def self.build_request_url(params)
-		  "http://api.nytimes.com/svc/search/v2/articlesearch?"+params.map {|k,v| "#{URI.escape(k)}=#{URI.escape(v.to_s)}"}.join('&')
+		  "http://api.nytimes.com/svc/search/v2/articlesearch.json?"+params
+		end
+		
+		def self.prepare_params(params, api_key)
+		  params.map {|k,v| "#{CGI.escape(k)}=#{CGI.escape(v.to_s)}"}.join('&')+"&api-key=#{api_key}"
 		end
     
     def self.invoke(params={})
-			raise AuthenticationError, "You must initialize the API key before you run any API queries" if @@api_key.nil?
-			full_params = params.merge 'api-key' => @@api_key
+			raise "You must initialize the API key before you run any API queries" if @@api_key.nil?
+			full_params = prepare_params(params, api_key=self.api_key)
 			uri = build_request_url(full_params)
 			response = HTTParty.get(uri)
 			check_response(response)
     end
     
     def self.check_response(response)
-      raise AuthenticationError if response.code == 403
-      raise BadRequestError if response.code == 400
-      raise ServerError if response.code == 500
+      raise "Authentication Error" if response.code == 403
+      raise "Bad Request" if response.code == 400
+      raise "Server Error" if response.code == 500
       if response.code == 200
         Oj.load(response.body)
       else
