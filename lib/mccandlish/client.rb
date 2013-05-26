@@ -33,7 +33,7 @@ module Mccandlish
     end
 
     def prepare_params(params, api_key)
-      params.map {|k,v| k+':'+v.to_s}.join('&')+"&api-key=#{api_key}"
+      params.map {|k,v| k+'='+v.to_s}.join('&')+"&api-key=#{api_key}"
     end
 
     def invoke(params={})
@@ -85,7 +85,7 @@ module Mccandlish
     
     # Full day name: Monday, Tuesday, Wednesday, etc.
     def day_of_week(day)
-      query_filters << "day_of_week:'#{day}'"
+      query_filters << "day_of_week:#{day}"
       self
     end
     
@@ -102,10 +102,22 @@ module Mccandlish
     
     def location(location)
       loc = CGI.escape(location)
-      query_filters << "glocations:'#{loc}'"
+      query_filters << "glocations:#{loc}"
       self
     end
-      
+    
+    # article, blogpost
+    def doc_type(doc_type)
+      query_filters << "document_type:#{doc_type}"
+      self
+    end
+    
+    # Foreign, Sports, Culture, etc.
+    def desk(desk)
+      # validate desk
+      query_filters << "news_desk:#{desk}"
+      self
+    end
   end
   
 end
