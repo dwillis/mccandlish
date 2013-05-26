@@ -27,22 +27,21 @@ module Mccandlish
       self
     end
 
-    ##
-		# Builds a request URI to call the API server
-		def build_request_url(params)
-		  "http://api.nytimes.com/svc/search/v2/articlesearch.json?"+params
-		end
+    # Builds a request URI to call the API server
+    def build_request_url(params)
+      "http://api.nytimes.com/svc/search/v2/articlesearch.json?"+params
+    end
 
-		def prepare_params(params, api_key)
-		  params.map {|k,v| k+':'+v.to_s}.join('&')+"&api-key=#{api_key}"
-		end
+    def prepare_params(params, api_key)
+      params.map {|k,v| k+':'+v.to_s}.join('&')+"&api-key=#{api_key}"
+    end
 
     def invoke(params={})
-			raise "You must initialize the API key before you run any API queries" if self.api_key.nil?
-			full_params = prepare_params(params, api_key=self.api_key)
-			@uri = build_request_url(full_params)
-			response = HTTParty.get(@uri)
-			check_response(response)
+      raise "You must initialize the API key before you run any API queries" if self.api_key.nil?
+      full_params = prepare_params(params, api_key=self.api_key)
+      @uri = build_request_url(full_params)
+      response = HTTParty.get(@uri)
+      check_response(response)
     end
 
     def check_response(response)
