@@ -8,10 +8,7 @@ module Mccandlish
     
     include HTTParty
     
-    attr_reader :web_url, :snippet, :lead_paragraph, :abstract, :print_page, :blog, :source, :multimedia, :headline_seo,
-    :keywords, :pub_date, :document_type, :news_desk, :byline, :type_of_material, :id, :word_count, :sort, :page, 
-    :facet_field_filters, :facet_filter, :query, :api_key, :params, :results, :byline, :section_name, :subsection_name,
-    :headline_main, :headline_print, :query_filters, :result, :uri
+    attr_reader :sort, :page, :query_filters, :result, :uri, :query, :api_key, :params
     
     def initialize(api_key=nil)
       @api_key = api_key
@@ -41,10 +38,12 @@ module Mccandlish
       full_params = prepare_params(params, api_key=self.api_key)
       @uri = build_request_url(full_params)
       response = HTTParty.get(@uri)
-      check_response(response)
+      parsed_response = check_response(response)
+      Result.create_from_parsed_response(parsed_response)
     end
 
     def check_response(response)
+      # replace with actual error handling
       raise "Authentication Error" if response.code == 403
       raise "Bad Request" if response.code == 400
       raise "Server Error" if response.code == 500

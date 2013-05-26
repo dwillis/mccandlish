@@ -1,4 +1,4 @@
-%w(client.rb version.rb).each do |f|
+%w(article.rb client.rb result.rb version.rb).each do |f|
   require File.join(File.dirname(__FILE__), 'mccandlish/', f)
 end
 
