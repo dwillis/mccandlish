@@ -1,6 +1,6 @@
 # McCandlish
 
-TODO: Write a gem description
+A thin Ruby wrapper for NYT Article Search API Version 2.
 
 ## Installation
 
