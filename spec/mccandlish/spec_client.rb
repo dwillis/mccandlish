@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'mccandlish'
 
 describe Client do
-  it "should start with the website" do
+  it "should have some tests" do
     
   end
 end
