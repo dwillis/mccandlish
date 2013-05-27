@@ -20,7 +20,21 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+You'll need an API key from [The New York Times](http://developer.nytimes.com/). Reading the [Article Search V2 API docs](http://developer.nytimes.com/docs/read/article_search_api_v2) wouldn't hurt, either. But once you have a key, you can get started like so:
+
+```
+require 'mccandlish'
+# create a client
+c = Mccandlish::Client.new('YOUR-API-KEY')
+# retrieve API results for articles and blog posts mentioning Afghanistan from the Foreign Desk on May 26, 2013:
+results = c.desk("Foreign").date("2013-05-26").query("Afghanistan").result
+results.hits
+ => 4
+article = results.articles.first
+=> #<Mccandlish::Article:0x007fca04897b20 @id="51a176ad46fdbf6c1db79139", @web_url="http://www.nytimes.com/2013/05/26/world/asia/in-afghan-transition-us-forces-take-a-step-back.html", @snippet="As the United States military moves into a support role in Afghanistan, a week spent with a brigade accompanying Afghan forces offered a direct look at the evolving training mission, for better or for worse.", ... @type_of_material="News", @word_count=1243>
+article.headline
+=> "In Afghan Transition, U.S. Forces Take a Step Back"
+```
 
 ## Contributing
 
