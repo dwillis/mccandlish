@@ -2,16 +2,21 @@ module Mccandlish
 
   class Result
     
-    attr_reader :hits, :offset, :copyright, :status
+    attr_reader :hits, :offset, :copyright, :status, :articles
     
-    def self.create_from_parsed_results(parsed_results)
-      self.new(:hits => parsed_results['response']['meta']['hits'],
-        :offset => parsed_results['response']['meta']['offset'],
-        :copyright => parsed_results['copyright'],
-        :status => parsed_results['status'],
-        :articles => Article.create_from_results(parsed_results['response']['docs'])
+    def initialize(params={})
+      params.each_pair do |k,v|
+       instance_variable_set("@#{k}", v)
+      end
+    end
+    
+    def self.create_from_parsed_response(results)
+      self.new(:hits => results['response']['meta']['hits'],
+        :offset => results['response']['meta']['offset'],
+        :copyright => results['copyright'],
+        :status => results['status'],
+        :articles => Article.create_from_results(results['response']['docs'])
       )
-      results
     end
     
     

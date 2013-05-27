@@ -22,14 +22,14 @@ module Mccandlish
       :snippet => result['snippet'],
       :lead_paragraph => result['lead_paragraph'],
       :abstract => result['abstract'],
-      :print_page => result['print_page'],
+      :print_page => result['print_page'].to_i,
       :blog => result['blog'],
       :source => result['source'],
       :headline_seo => result['headline']['seo'],
       :headline => result['headline']['main'],
       :kicker => result['headline']['kicker'],
       :headline_print => result['headline']['print'],
-      :keywords => result['keywords'],
+      :keywords => result['keywords'].sort_by{|k| k['rank'].to_i},
       :date => Date.parse(result['pub_date']),
       :document_type => result['document_type'],
       :news_desk => result['news_desk'],
@@ -37,7 +37,7 @@ module Mccandlish
       :subsection_name => result['subsection_name'],
       :byline => result['byline'],
       :type_of_material => result['type_of_material'],
-      :word_count => result['word_count']
+      :word_count => result['word_count'].to_i
       )
     end
     
