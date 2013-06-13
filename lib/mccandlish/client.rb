@@ -14,13 +14,18 @@ module Mccandlish
       @api_key = api_key
       @params = {}
       @query_filters = []
-      @uri
+      @uri = ''
+    end
+    
+    def to_s
+      "<McCandlish>"
     end
     
     # clears out params, query_filters 
     def reset
       @params = {}
       @query_filters = []
+      @uri = ''
       self
     end
 
@@ -59,15 +64,21 @@ module Mccandlish
       invoke(params)
     end
     
-    def query(query)
-      params['q'] = CGI.escape(query)
-      params.merge!({'fq' => query_filters.uniq.join("+AND+")})
+    # optionally surround multi-word queries with quotes to search for exact matches of phrases
+    def query(query, phrase=false)
+      if phrase
+        q = %q[]
+        params['q'] = query.gsub(" ","+").gsub('"',"'")
+      else
+        params['q'] = CGI.escape(query)
+      end
+      params.merge!({'fq' => query_filters.uniq.join("+AND+")}) unless query_filters.empty?
       self
     end
     
     # newest or oldest
     def sort(sort)
-      params['sort'] = sort
+      params['sort'] = sort if sort == 'newest' or sort == 'oldest'
       self
     end
     
@@ -111,12 +122,54 @@ module Mccandlish
       self
     end
     
-    # Foreign, Sports, Culture, etc.
+    # Foreign, Sports, Culture, etc. - some AP pieces have 'None' as desk
     def desk(desk)
       # validate desk
       query_filters << "news_desk:#{desk}"
       self
     end
+    
+    # similar to desk, but seems to be always populated
+    def section(section)
+      query_filters << "section_name:#{section}"
+      self
+    end
+        
+    # NYT Index terms
+    def organization(organization)
+      org = CGI.escape(organization)
+      query_filters << "organizations:#{org}"
+      self
+    end
+    
+    # NYT Index terms
+    def person(person)
+      per = CGI.escape(person)
+      query_filters << "persons:#{per}"
+      self
+    end
+    
+    # NYT Index terms
+    def subject(subject)
+      subj = CGI.escape(subject)
+      query_filters << "subject:#{subj}"
+      self
+    end
+    
+    # AP, Reuters, IHT, The New York Times
+    def source(source)
+      sou = CGI.escape(source)
+      query_filters << "source:#{sou}"
+      self
+    end
+    
+    # source, section_name, document_type, type_of_material and day_of_week
+    def facet(facet_field)
+      params['facet_field'] = facet_field
+      params['facet_filter'] = true
+      self
+    end
+    
   end
   
 end

@@ -12,6 +12,10 @@ module Mccandlish
       end
     end
     
+    def to_s
+      "<NYT Article: #{headline}>"
+    end
+    
     def self.create_from_results(results)
       results.map{|result| Article.create(result)}
     end
@@ -40,10 +44,6 @@ module Mccandlish
       :word_count => result['word_count'].to_i
       )
     end
-    
-    
-    
-    
     
   end
 end
