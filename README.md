@@ -28,7 +28,7 @@ results = c.desk("Foreign").date("2013-05-26").query("Afghanistan").result # ret
 results.hits
  => 4
 article = results.articles.first
-=> #<Mccandlish::Article:0x007fca04897b20 @id="51a176ad46fdbf6c1db79139", @web_url="http://www.nytimes.com/2013/05/26/world/asia/in-afghan-transition-us-forces-take-a-step-back.html", @snippet="As the United States military moves into a support role in Afghanistan, a week spent with a brigade accompanying Afghan forces offered a direct look at the evolving training mission, for better or for worse.", ... @type_of_material="News", @word_count=1243>
+=> <Mccandlish::Article:0x007fca04897b20 @id="51a176ad46fdbf6c1db79139", @web_url="http://www.nytimes.com/2013/05/26/world/asia/in-afghan-transition-us-forces-take-a-step-back.html", @snippet="As the United States military moves into a support role in Afghanistan, a week spent with a brigade accompanying Afghan forces offered a direct look at the evolving training mission, for better or for worse.", ... @type_of_material="News", @word_count=1243>
 article.headline
 => "In Afghan Transition, U.S. Forces Take a Step Back"
 ```
