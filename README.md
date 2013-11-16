@@ -20,12 +20,11 @@ Or install it yourself as:
 
 You'll need an API key from [The New York Times](http://developer.nytimes.com/). Reading the [Article Search V2 API docs](http://developer.nytimes.com/docs/read/article_search_api_v2) wouldn't hurt, either. But once you have a key, you can get started like so:
 
-```
+```ruby
 require 'mccandlish'
-# create a client
+
 c = Mccandlish::Client.new('YOUR-API-KEY')
-# retrieve API results for articles and blog posts mentioning Afghanistan from the Foreign Desk on May 26, 2013:
-results = c.desk("Foreign").date("2013-05-26").query("Afghanistan").result
+results = c.desk("Foreign").date("2013-05-26").query("Afghanistan").result # retrieve API results for articles and blog posts mentioning Afghanistan from the Foreign Desk on May 26, 2013:
 results.hits
  => 4
 article = results.articles.first
